@@ -1,9 +1,9 @@
-# fifo-map
+# fifo-map and fifo-set
 
 Copyright (C) Giumo Clanjor (哆啦比猫/兰威举), 2019-2020.
 Licensed under the MIT License.
 
-A hash map that guarantees iteration in insertion-order for C++14 or above.
+A hash map and a hash set that guarantees iteration in insertion-order for C++14 or above.
 Or you can say, "a FIFO-ordered associative container" if you feel like it.
 
 (Yes, it's similar to `nlohmann::fifo_map`, but this one uses
