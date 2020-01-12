@@ -136,6 +136,27 @@ namespace nonstd
             }
         }
 
+        template <class... Args>
+        auto emplace_front(Args&&... args) -> std::pair<iterator, bool>
+        {
+            value_type value{std::forward<Args>(args)...};
+
+            auto map_it = map.find(value.first);
+            if (map_it == map.end()) {
+                auto& list_it = (empty() ? list_back : map.at(list.front().first));
+                auto list_before_item = list_it;
+                list_it = list.insert_after(list_before_item, std::move(value));
+
+                map.emplace(list_it->first, list_before_item);
+
+                return { list_it, true };
+            } else {
+                auto list_it = map_it->second;
+                ++list_it;
+                return { list_it, false };
+            }
+        }
+
         auto erase(list_iterator list_it) -> void
         {
             auto map_it = map.find(list_it->first);
