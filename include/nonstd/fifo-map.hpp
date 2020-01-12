@@ -14,7 +14,7 @@
 // Time complexity of all implemented operations are basically
 // the same as `std::unordered_map`.
 //
-// Copyright (C) Giumo Clanjor (哆啦比猫/兰威举), 2019.
+// Copyright (C) Giumo Clanjor (哆啦比猫/兰威举), 2019-2020.
 // Licensed under the MIT License.
 
 #include <unordered_map>
@@ -75,10 +75,22 @@ namespace nonstd
         using map_iterator = typename map_type::iterator;
         using size_type = typename map_type::size_type;
 
-        // rule of five; only movable; force noexcept move constructible
+        // rule of five; force noexcept move constructible
         fifo_map() = default;
-        fifo_map(fifo_map const&) = delete;
-        auto operator = (fifo_map const&) -> fifo_map& = delete;
+
+        fifo_map(fifo_map const& x)
+        {
+            for (auto&& kv: x)
+                emplace_back(kv);
+        }
+
+        auto operator = (fifo_map const& x) -> fifo_map&
+        {
+            clear();
+            for (auto&& kv: x)
+                emplace_back(kv);
+            return *this;
+        }
 
         fifo_map(fifo_map&& other) noexcept
             : map{std::move(other.map)}
